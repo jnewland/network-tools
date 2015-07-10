@@ -1,7 +1,7 @@
 require "nokogiri"
 
 # Grab traceroutes from a few random sites on the internet
-targets = %w(
+@targets = %w(
   google.com
   yahoo.com
   s3.amazonaws.com
@@ -9,11 +9,17 @@ targets = %w(
   cnn.com
   github.com
 )
+
 task :nmap do
-  `sudo nmap -sn --traceroute #{targets.join(" ")} -oX nmap.xml`
+  `sudo nmap -sn --traceroute #{@targets.join(" ")} -oX nmap.xml`
+  # parse the file
+  f = File.open("nmap.xml")
+  @doc = Nokogiri::XML(f)
+  f.close
 end
 
-task :default => [:nmap] do
+desc "Generate magic"
+task :smokeping => [:nmap] do
   # do some setup
   ip_count = Hash.new(0)
   hostnames = {}
@@ -22,13 +28,8 @@ task :default => [:nmap] do
   puts "title = ISP"
   puts ""
 
-  # parse the file
-  f = File.open("nmap.xml")
-  doc = Nokogiri::XML(f)
-  f.close
-
   # pull all the hops out of it
-  hops = doc.xpath("//hop").each do |h|
+  hops = @doc.xpath("//hop").each do |h|
     ip_count[h["ipaddr"]] += 1
     hostnames[h["ipaddr"]] = h["host"]
   end
