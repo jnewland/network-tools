@@ -1,3 +1,7 @@
 vendor/gems
 .bundle
 *.xml
+*.dot
+*.png
+*.dat
+*.gz
