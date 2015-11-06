@@ -2,13 +2,41 @@ Tools for researching networks.
 
 ### Network path analysis
 
-Performs traceroutes and generates a graphviz file (`graph.dot`) representing
-the routes taken by your traffic.
+Generates a graphviz file (`graph.dot`) representing the hope in the route taken
+by traffic to a set of target domains. By default, Alexa's top 25 sites in your
+current country are used as targets.
 
-    bundle exec rake dot
-    dot -Tpng graph.dot > graph.png
+#### Dependencies
+
+System dependencies:
+
+    geoip
+    graphviz
+    jq
+    nmap
+    ruby / bundler
+
+A Brewfile is provided for those on OS X:
+
+    brew tap homebrew/bundle
+    brew bundle
+
+Ruby dependencies can be installed with bundler:
+
+    bundle install
+
+#### Usage
+
+    bundle exec rake graph
     open graph.png
-    TARGETS=github.com bundle exec rake dot
+
+Use a specific set of targets by setting the `TARGETS` environment variable:
+
+    TARGETS=github.com,google.com bundle exec rake dot
+
+Cleanup cached nmap output for another run:
+
+    bundle exec rake graph
 
 ### Automatic smokeping config generation
 

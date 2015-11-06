@@ -8,8 +8,11 @@ else
   @targets = alexa.scan(/"\/siteinfo\/(.*)"/).flatten
 end
 
-task :nmap => ["GeoIPASNum.dat"] do
+file "nmap.xml" => ["GeoIPASNum.dat"] do
   `sudo nmap -sn --traceroute #{@targets.join(" ")} -oX nmap.xml`
+end
+
+task :nmap => ["nmap.xml"] do
   # parse the file
   f = File.open("nmap.xml")
   @doc = Nokogiri::XML(f)
@@ -90,10 +93,18 @@ task :dot => [:nmap] do
   end
 end
 
+task :graph => [:dot] do
+  `dot -Tpng graph.dot > graph.png`
+end
+
 file "GeoIPASNum.dat.gz" do
   `test -f GeoIPASNum.dat.gz || curl -s http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz > GeoIPASNum.dat.gz`
 end
 
 file "GeoIPASNum.dat" => ["GeoIPASNum.dat.gz"] do
   `test -f GeoIPASNum.dat || gunzip GeoIPASNum.dat.gz`
+end
+
+task :clean do
+  `rm -f graph.dot graph.png GeoIPASNum.dat.gz GeoIPASNum.dat nmap.xml`
 end
