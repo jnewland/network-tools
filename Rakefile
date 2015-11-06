@@ -73,8 +73,10 @@ task :dot => [:nmap] do
       t.xpath("//hop").each do |h|
         ip = h["ipaddr"]
         hop = @hostnames[ip] || ip
-        if previous_hop = trace_hops.last
-          edges << "\"#{previous_hop}\" -> \"#{hop}\";"
+        if hop != hops.first
+          if previous_hop = trace_hops.last
+            edges << "\"#{previous_hop}\" -> \"#{hop}\";"
+          end
         end
         trace_hops << hop
         hops << hop
