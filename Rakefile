@@ -97,7 +97,7 @@ task :dot => [:nmap] do
 end
 
 file "GeoIPASNum.dat.gz" do
-  `test -f GeoIPASNum.dat.gz || wget http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz`
+  `test -f GeoIPASNum.dat.gz || curl -s http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz > GeoIPASNum.dat.gz`
 end
 
 file "GeoIPASNum.dat" => ["GeoIPASNum.dat.gz"] do
