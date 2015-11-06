@@ -43,7 +43,7 @@ task :smokeping => [:nmap] do
 
   # include all hops in more than half
   common_ips = @ip_count.select do |k,v|
-    v > (targets.length / 2)
+    v > (@targets.length / 2)
   end
 
   # output config
