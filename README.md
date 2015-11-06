@@ -2,9 +2,9 @@ Tools for researching networks.
 
 ### Network path analysis
 
-Generates a graphviz file (`graph.dot`) representing the hope in the route taken
-by traffic to a set of target domains. By default, Alexa's top 25 sites in your
-current country are used as targets.
+Generates a graphviz graph (`graph.png`) representing routes taken by traffic to
+a set of target domains. Alexa's top 25 sites in your current country are used
+as targets if none are provided.
 
 #### Dependencies
 
