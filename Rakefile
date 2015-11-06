@@ -1,17 +1,11 @@
 require "nokogiri"
 
-# Grab traceroutes from a few random sites on the internet
-@targets = %w(
-  google.com
-  yahoo.com
-  s3.amazonaws.com
-  amazon.com
-  cnn.com
-  github.com
-)
-
 if ENV["TARGETS"]
   @targets = ENV["TARGETS"].split(",")
+else
+  country = `curl -s ipinfo.io  | jq -r '.country'`
+  alexa = `curl -s http://www.alexa.com/topsites/countries/#{country}`
+  @targets = alexa.scan(/"\/siteinfo\/(.*)"/).flatten
 end
 
 task :nmap => ["GeoIPASNum.dat"] do
