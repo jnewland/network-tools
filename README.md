@@ -36,7 +36,7 @@ Use a specific set of targets by setting the `TARGETS` environment variable:
 
 Cleanup cached nmap output for another run:
 
-    bundle exec rake graph
+    bundle exec rake clean
 
 ### Automatic smokeping config generation
 
