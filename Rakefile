@@ -4,7 +4,7 @@ if ENV["TARGETS"]
   @targets = ENV["TARGETS"].split(",")
 else
   country = `curl -s ipinfo.io  | jq -r '.country'`
-  alexa = `curl -s http://www.alexa.com/topsites/countries/#{country}`
+  alexa = `curl -s https://www.alexa.com/topsites/countries/#{country}`
   @targets = alexa.scan(/"\/siteinfo\/(.*)"/).flatten
 end
 
