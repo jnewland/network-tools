@@ -41,7 +41,7 @@ task :dot => [:nmap] do
 
     @doc.xpath("//trace").each do |t|
       trace_hops = []
-      next if t.xpath("hop").length == 2
+      next if t.xpath("hop").length <= 2
       t.xpath("hop").each do |h|
         ip = h["ipaddr"]
         next if @ip_network[ip] == ""
