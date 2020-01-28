@@ -71,8 +71,5 @@ end
 
 task :graph => [:dot] do
   `dot -Tpng out/graph.dot > out/graph.png`
-end
-
-task :clean do
-  `rm -f out/graph.* out/nmap.xml`
+  `rm out/graph.dot out/nmap.xml`
 end

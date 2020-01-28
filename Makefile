@@ -2,10 +2,6 @@
 build: Gemfile.lock
 	docker build -t network-tools .
 
-.PHONY: clean
-clean:
-	rm graph.*
-
 Gemfile.lock: Gemfile
 	docker run --rm -v "$$PWD":/usr/src/app -w /usr/src/app ruby:2.7.0-buster bundle install
 
