@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'nokogiri'
-gem 'rake'
+gem "nokogiri", ">= 1.10.4"
+gem "rake"
