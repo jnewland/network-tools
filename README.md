@@ -13,4 +13,4 @@ as targets if none are provided.
 
 Use a specific set of targets by setting the `TARGETS` environment variable:
 
-    docker run --rm -it -E TARGETS=github.com,gitlab.com -v $(pwd):/usr/src/app/out jnewland/network-tools rake graph
+    docker run --rm -it -e TARGETS=github.com,gitlab.com -v $(pwd):/usr/src/app/out jnewland/network-tools rake graph
