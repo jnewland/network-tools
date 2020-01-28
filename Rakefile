@@ -20,19 +20,15 @@ task :nmap => ["out/nmap.xml"] do
 
   # do some parsing that we want anytime we use this
   @ip_count = Hash.new(0)
-  @hostname_count = Hash.new(0)
   @hostnames = {}
   @ip_network = {}
-  @hostname_network = {}
 
   # pull all the hops out of it
   hops = @doc.xpath("//hop").each do |h|
     ip = h["ipaddr"]
     @ip_count[ip] += 1
     @hostnames[ip] = host = h["host"] || ip
-    @hostname_count[host] += 1
-    @ip_network[ip] = `geoiplookup #{h["ipaddr"]} | cut -f 2 -d : | awk '{print $1}'`.chomp!
-    @hostname_network[host] = @ip_network[ip]
+    @ip_network[ip] = `geoiplookup #{h["ipaddr"]} | grep ASNum | cut -f 2 -d : | grep -v "not found"`.strip
   end
 end
 
@@ -45,9 +41,12 @@ task :dot => [:nmap] do
 
     @doc.xpath("//trace").each do |t|
       trace_hops = []
-      t.xpath("//hop").each do |h|
+      next if t.xpath("hop").length == 2
+      t.xpath("hop").each do |h|
         ip = h["ipaddr"]
+        next if @ip_network[ip] == ""
         hop = @hostnames[ip] || ip
+        hop += " / #{@ip_network[ip]}"
         if hop != hops.first
           if previous_hop = trace_hops.last
             edges << "\"#{previous_hop}\" -> \"#{hop}\";"
@@ -62,7 +61,7 @@ task :dot => [:nmap] do
       dotfile.write "#{edge}\n"
     end
     hops.uniq.each do |hop|
-      dotfile.write "\"#{hop}\" [fontsize = #{12+(@hostname_count[hop]*10)}];\n"
+      dotfile.write "\"#{hop}\" [fontsize = #{12+(@ip_count[hop]*10)}];\n"
     end
 
     dotfile.write "graph [rankdir=TB];\n"
