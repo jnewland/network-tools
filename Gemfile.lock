@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     mini_portile2 (2.4.0)
-    nokogiri (1.10.7)
+    nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
     rake (12.3.0)
 
